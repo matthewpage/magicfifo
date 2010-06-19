@@ -113,15 +113,14 @@ int main(int argc, char** argv)
 		debug(LOG_INFO, "wait time: %d", waitTime);
 	}
 	
-	fpi = fopen(inputPath, "rb");
-	fpo = fopen(outputPath, "wb+");
-	
+	fpi = fopen(inputPath, "rb");	
 	if (!fpi)
 	{
 		debug(LOG_ALERT, "ERROR: Can't open input file");
 		return 1;
 	}
-	
+
+	fpo = fopen(outputPath, "wb+");
 	if (!fpo)
 	{
 		debug(LOG_ALERT, "ERROR: Can't open output file");
