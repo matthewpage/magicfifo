@@ -91,7 +91,7 @@ int main(int argc, char** argv)
 	long filePosition; 				// position in input file when we have to reopen	
 	unsigned char buffer[65536];	// buffer for moving data
 	fileStartOffset = 0;
-	waitTime = 3;
+	waitTime = 1;
 	
 	FILE *fpi;	// pointer to input file
 	FILE *fpo;	// pointer to output file
@@ -134,6 +134,7 @@ int main(int argc, char** argv)
 	long totalWritten = 0;
 
 	// START READING FILE
+	int checkForDataCount = 0;
 	continueCompression = true;
 	reachedEndOfFile = false;
 	
@@ -161,8 +162,9 @@ int main(int argc, char** argv)
 			if (reachedEndOfFile == true)
 			{
 				debug(LOG_DEBUG, "File is still growing...");
+				reachedEndOfFile = false;
+				checkForDataCount = 0;
 			}
-			reachedEndOfFile = false;	
 		}			
 		else
 		{
@@ -176,16 +178,22 @@ int main(int argc, char** argv)
 			else
 			{	
 				/* lets wait for a bit and see any more data appears */						
-				debug(LOG_DEBUG, "Waiting to see if file is still growing");
+				debug(LOG_DEBUG, "Waiting to see if file is still growing #%d", checkForDataCount);
 
-				reachedEndOfFile = true;				
 				filePosition = ftell(fpi);
 				sleep(waitTime);
 				
 				fclose(fpi);
 				fpi = fopen(inputPath, "rb");				
-				fseek(fpi, filePosition, SEEK_SET);			
+				fseek(fpi, filePosition, SEEK_SET);
+
+				if (checkForDataCount >= 5)
+				{
+					reachedEndOfFile = true;
+				}
 			}
+
+			checkForDataCount++;
 		}	
 	}	
 	
