@@ -2,7 +2,7 @@
  * magicfifo.c
  *
  *  Created on: 	14 Feb 2010
- *  Last modified:	19 June 2010
+ *  Last modified:	05 August 2011
  *  Author: 		Matthew Page
  */
 #include	<unistd.h>
@@ -13,8 +13,8 @@
 #include 	<dlfcn.h>
 #include	<syslog.h>
 
-#define VERSION 	1.2
-#define BUILD_DATE	"19 June 2010"
+#define VERSION 	1.3
+#define BUILD_DATE	"05 August 2011"
 
 int debugLevel = 2;
 
@@ -28,7 +28,7 @@ bool reachedEndOfFile;
 
 void usage(void)
 {
-	fprintf(stdout, " Usage : magicfifo -i -o [-s] [-w] [-v <0-7>]\n\n");
+	fprintf(stderr, " Usage : magicfifo -i -o [-s] [-w] [-v <0-7>]\n\n");
 	fprintf(stderr, "\t-i : input file\n");
 	fprintf(stderr, "\t-o : output file\n");
 	fprintf(stderr, "\t-s : byte offset from start of input file\n");
@@ -84,7 +84,7 @@ static void readArguments(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	fprintf(stdout, "MagicFIFO v%g (c)Matthew Page, %s\n", VERSION, BUILD_DATE);
+	fprintf(stderr, "MagicFIFO v%g (c)Matthew Page, %s\n", VERSION, BUILD_DATE);
 	
 	/* Initialise variables */
 	
